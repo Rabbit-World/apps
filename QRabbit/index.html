@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRabbit Code Generator - Rabbit-World</title>
+	<link rel="icon" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="container">
+    <div class="hero">
+        <h1>QR Code <span>Generator</span></h1>
+    <input type="text" id="inputText" placeholder="Enter text or link">
+	<input type="hidden" id="rabbitInstructions" value="Add this QR code to my Rabbit Hole journal">
+    <button id="generateBtn" onclick="generateQR()">Generate QR Code</button>
+    <div id="qrcode"></div>
+    <button id="downloadBtn" onclick="downloadQR()">Download</button>
+	<div id="rabbitFeedback" style="display: none;">QR Code added to Rabbit Hole journal</div>
+    <footer>
+        <p>Build by <a href="https://rabbit-world.github.io/" target="_blank">Rabbit-World</a></p>
+        
+    </footer>
+</div>
+
+<script src="qrcode.min.js"></script>
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
+
