@@ -27,6 +27,10 @@ function downloadQR() {
     var canvas = document.querySelector('canvas');
     var imageData = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
     var link = document.createElement('a');
+	
+    // Mostra l'alert personalizzato
+    alert("🐰 Rabbit Hole Journal 🔍\n\nAdd this QR code to my Rabbit Hole journal?\n\nClick OK to confirm.");
+	
     link.href = imageData;
     link.download = 'qrcode.png';
     link.click();
