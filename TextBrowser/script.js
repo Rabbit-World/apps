@@ -32,25 +32,31 @@ document.addEventListener('DOMContentLoaded', () => {
         output.scrollTop = output.scrollHeight;
     }
 
-    function sanitizeHTML(html) {
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        return doc.body.textContent || "";
-    }
-
     function loadContent(url) {
-        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        output.innerHTML += `Loading ${url}...\n`;
+        
+        // Fix per URL senza protocollo
+        if (!url.startsWith('http')) {
             url = 'https://' + url;
         }
-        output.innerHTML += `Loading ${url}...\n`;
+
         fetch(url)
             .then(response => response.text())
             .then(data => {
-                const cleanText = sanitizeHTML(data);
-                output.innerHTML += "Content loaded:\n\n";
-                output.innerHTML += cleanText.replace(/\s+/g, ' ').trim();
+                // Modifica ESSENZIALE: Rimozione tag HTML
+                const cleanData = data
+                    .replace(/<script.*?<\/script>/gs, '') // Rimuove gli script
+                    .replace(/<style.*?<\/style>/gs, '')    // Rimuove gli stili
+                    .replace(/<[^>]+>/g, '')               // Rimuove altri tag
+                    .replace(/\s+/g, ' ')                   // Normalizza spazi
+                    .trim();
+
+                output.innerHTML += "Text content:\n\n";
+                output.innerHTML += cleanData;
             })
             .catch(error => {
-                output.innerHTML += `Error loading content: ${error}\n`;
+                output.innerHTML += `Error: ${error}\n`;
+                output.innerHTML += "Pro Tip: Prova con 'load https://example.com'";
             });
     }
 
