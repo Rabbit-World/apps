@@ -33,20 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function sanitizeHTML(html) {
-        return html
-            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-            .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
-            .replace(/<!--[\s\S]*?-->/g, '')
-            .replace(/<[^>]+>/g, '')
-            .replace(/&\w+;/g, match => ({
-                '&amp;': '&',
-                '&lt;': '<',
-                '&gt;': '>',
-                '&quot;': '"',
-                '&apos;': "'"
-            }[match] || match))
-            .replace(/\s+/g, ' ')
-            .trim();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        return doc.body.textContent || "";
     }
 
     function loadContent(url) {
@@ -56,28 +44,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         output.innerHTML += `Loading ${url}...\n`;
         
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        fetch(proxyUrl + url, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-            }
-        })
-        .then(response => {
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            return response.text();
-        })
-        .then(data => {
-            const cleanText = sanitizeHTML(data);
-            output.innerHTML += "Text content:\n\n";
-            output.innerHTML += cleanText;
-        })
-        .catch(error => {
-            if (error.message.includes('Failed to fetch')) {
-                output.innerHTML += "CORS or network error. Try using a different URL.\n";
-            } else {
-                output.innerHTML += `Error: ${error.message}\n`;
-            }
-        });
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                const cleanText = sanitizeHTML(data);
+                output.innerHTML += "Text content:\n\n";
+                output.innerHTML += cleanText;
+            })
+            .catch(error => {
+                output.innerHTML += `Error loading content: ${error}\n`;
+                output.innerHTML += "Note: Some websites may block direct access due to CORS policies.\n";
+            });
     }
 
     input.addEventListener('keypress', (e) => {
