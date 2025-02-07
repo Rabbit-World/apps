@@ -32,17 +32,52 @@ document.addEventListener('DOMContentLoaded', () => {
         output.scrollTop = output.scrollHeight;
     }
 
+    function sanitizeHTML(html) {
+        return html
+            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+            .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+            .replace(/<!--[\s\S]*?-->/g, '')
+            .replace(/<[^>]+>/g, '')
+            .replace(/&\w+;/g, match => ({
+                '&amp;': '&',
+                '&lt;': '<',
+                '&gt;': '>',
+                '&quot;': '"',
+                '&apos;': "'"
+            }[match] || match))
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
     function loadContent(url) {
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+            url = 'https://' + url;
+        }
+
         output.innerHTML += `Loading ${url}...\n`;
-        fetch(url)
-            .then(response => response.text())
-            .then(data => {
-                output.innerHTML += "Content loaded:\n\n";
-                output.innerHTML += data.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            })
-            .catch(error => {
-                output.innerHTML += `Error loading content: ${error}\n`;
-            });
+        
+        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        fetch(proxyUrl + url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            return response.text();
+        })
+        .then(data => {
+            const cleanText = sanitizeHTML(data);
+            output.innerHTML += "Text content:\n\n";
+            output.innerHTML += cleanText;
+        })
+        .catch(error => {
+            if (error.message.includes('Failed to fetch')) {
+                output.innerHTML += "CORS or network error. Try using a different URL.\n";
+            } else {
+                output.innerHTML += `Error: ${error.message}\n`;
+            }
+        });
     }
 
     input.addEventListener('keypress', (e) => {
