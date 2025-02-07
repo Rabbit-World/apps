@@ -32,28 +32,16 @@ document.addEventListener('DOMContentLoaded', () => {
         output.scrollTop = output.scrollHeight;
     }
 
-    function sanitizeHTML(html) {
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        return doc.body.textContent || "";
-    }
-
     function loadContent(url) {
-        if (!url.startsWith('http://') && !url.startsWith('https://')) {
-            url = 'https://' + url;
-        }
-
         output.innerHTML += `Loading ${url}...\n`;
-        
         fetch(url)
             .then(response => response.text())
             .then(data => {
-                const cleanText = sanitizeHTML(data);
-                output.innerHTML += "Text content:\n\n";
-                output.innerHTML += cleanText;
+                output.innerHTML += "Content loaded:\n\n";
+                output.innerHTML += data.replace(/</g, '&lt;').replace(/>/g, '&gt;');
             })
             .catch(error => {
                 output.innerHTML += `Error loading content: ${error}\n`;
-                output.innerHTML += "Note: Some websites may block direct access due to CORS policies.\n";
             });
     }
 
