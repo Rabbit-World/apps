@@ -1,0 +1,26 @@
+import React from 'react';
+interface Conversion {
+title: string; // Title of the conversion
+conversionSymbols: string // This original unit -> file
+content: string; // Output of the conversion
+}
+const DisplayCard: React.FC< conversion: Conversion }>=
+return (
+<div>
+<h1>{conversion.title}</h1>
+<p>{conversion.conversionSymbols}</p>
+<p>{conversion.content}</p>
+</div>
+);
+};
+// Example usage:
+const exampleConversion: Conversion = {
+title: 'Conversion of US dollars to Canadian dollars,
+conversionSymbols: 'USD -> CAD',
+content: 'Unit amount'
+};
+<DisplayCard conversion={exampleConversion} />
+export const Covert = {
+DisplayCard,
+exampleConversion
+};
