@@ -1,0 +1,12 @@
+def set_custom_location():
+    custom_params = {
+        "location.override": "true",
+        "location.city": "Northampton",
+        "location.country": "GB",
+        "location.coordinates": "52.2405,-0.9027",
+        "location.timezone": "Europe/London"
+    }
+    
+
+# Execute the function
+print(set_custom_location())
