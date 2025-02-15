@@ -1,0 +1,10 @@
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+
+# Carica l'immagine
+img = mpimg.imread('https://rabbit-world.github.io/assets/img/certified_en.png')
+
+# Mostra l'immagine
+plt.imshow(img)
+plt.axis('off')  # Nasconde le assi
+plt.show()
