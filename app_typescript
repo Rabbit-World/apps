@@ -1,0 +1,94 @@
+// conversion_app.tsx
+import React from 'react';
+
+type ConversionType = 'length' | 'temperature' | 'currency';
+
+interface Conversion {
+  title: string;
+  from: string;
+  to: string;
+  formula: (value: number) => number;
+}
+
+interface ConversionCardProps {
+  type: ConversionType;
+  value: number;
+}
+
+const conversions: Record<ConversionType, Conversion> = {
+  length: {
+    title: 'Convertitore Lunghezza',
+    from: 'cm',
+    to: 'in',
+    formula: (cm) => cm / 2.54
+  },
+  temperature: {
+    title: 'Convertitore Temperatura',
+    from: '°C',
+    to: '°F',
+    formula: (c) => (c * 9/5) + 32
+  },
+  currency: {
+    title: 'Convertitore Valuta',
+    from: 'USD',
+    to: 'CAD',
+    formula: (usd) => usd * 1.35 // Tasso aggiornabile
+  }
+};
+
+const DisplayCard: React.FC<ConversionCardProps> = ({ type, value }) => {
+  const conversion = conversions[type];
+  const result = conversion.formula(value);
+
+  return (
+    <div className="r1-conversion-card">
+      <h2>{conversion.title}</h2>
+      <div className="conversion-display">
+        <span>{value.toFixed(2)} {conversion.from}</span>
+        <span>→</span>
+        <span className="result">{result.toFixed(2)} {conversion.to}</span>
+      </div>
+    </div>
+  );
+};
+
+// Esempi d'uso nel Rabbit Hole
+const ExampleConversions = () => (
+  <>
+    <DisplayCard type="length" value={12} />
+    <DisplayCard type="temperature" value={23} />
+  </>
+);
+
+export const ConversionApp = {
+  DisplayCard,
+  conversions,
+  ExampleConversions
+};
+
+// Stile ottimizzato per UI Rabbit R1
+const styles = `
+.r1-conversion-card {
+  padding: 12px;
+  margin: 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  max-width: 300px;
+}
+
+.conversion-display {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.result {
+  color: #00ff9d;
+  font-weight: 500;
+}
+`;
+
+document.head.appendChild(document.createElement('style')).textContent = styles;
