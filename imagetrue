@@ -1,0 +1,25 @@
+import React from 'react';
+
+interface ImageProps {
+src: string;
+}
+
+const ExternalImage: React.FC<ImageProps> = ({ src }) => {
+ return (
+  <div>
+    <img src={src} alt="External Image" />
+  </div>
+ );
+};
+
+const App: React.FC = () => {
+ const imageUrl = 'https://rabbit-world.github.io/assets/img/certified_en.png'; // link of the image
+return (
+  <div className="App">
+   <h1>Immagine Esterna</h1>
+   <ExternalImage src={imageUrl} />
+  </div>
+ );
+};
+
+export default App;
