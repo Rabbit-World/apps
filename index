@@ -1,0 +1,30 @@
+import { render } from '@youi/react-native-youi';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF', // Sostituisci con il colore di sfondo desiderato
+  },
+  text: {
+    fontSize: 24,
+    textAlign: 'center',
+    margin: 10,
+    color: '#000000', // Sostituisci con il colore del testo desiderato
+  },
+});
+
+const App = () => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>
+        Rabbit R1
+      </Text>
+    </View>
+  );
+};
+
+render(<App />);
