@@ -3,7 +3,7 @@
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
-const PlAYER_STORAGE_KEY = "PLAYLIST_a9131dec-84d8-4bf1-9ec5-1066a90c3635_PLAYER";
+const PlAYER_STORAGE_KEY = "PLAYLIST_a9131dec-84d8-4bf1-9ec5-1066a90c3635";
 
 const player = $(".player");
 const cd = $(".cd");
